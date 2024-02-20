@@ -5,6 +5,6 @@ template <typename T> T f(T x) {
 template <typename T, typename U> U mx(T x, U y) { return x > y ? x : y; }
 
 long long do_something() {
-  int x = f(42) + f(33LL);
+  int x = f(42);
   return mx(69LL, x);
 }

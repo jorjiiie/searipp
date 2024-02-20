@@ -1,2 +1,3 @@
 (library
- (name searipp))
+ (name searipp)
+ (libraries str))

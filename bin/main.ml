@@ -1,8 +1,10 @@
 open Printf
 
-let match_fn = "mx"
+let match_fn = "times_two"
 
-let match_sig = "int (long long, int)"
+let match_sig = "int (int)"
+
+let params = "int"
 
 let fpath pth j =
   match Yojson.Basic.Util.path pth j with
@@ -67,9 +69,16 @@ let read_file f =
   with End_of_file -> close_in ic; List.rev !lines
 ;;
 
-let () =
+let get_str file =
   let a, b = get_se in
-  let z = read_file "cpp_files/prog.cpp" in
+  let z = read_file file in
   let fn = List.filteri (fun i _ -> i + 1 >= a && i + 1 <= b) z in
-  List.iter (printf "%s\n") fn
+  let tot = List.fold_left (fun acc x -> acc ^ x ^ "\n") "" fn in
+  let rep_tempty = Str.global_replace (Str.regexp "template<> ") "" tot in
+  let reg_all_removed =
+    Str.global_replace (Str.regexp (match_fn ^ "<" ^ params ^ ">")) match_fn rep_tempty
+  in
+  printf "%s\n" reg_all_removed
 ;;
+
+let () = get_str "cpp_files/prog.cpp"
